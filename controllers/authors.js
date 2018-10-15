@@ -16,6 +16,15 @@ router.get('/new', (req, res) => {
   res.render('authors/new.ejs');
 });
 
+router.get('/:id',(req, res) => {
+
+  Author.findById(req.params.id, (err, authorFound) => {
+    res.render('authors/show.ejs', {
+      author: authorFound
+    })
+  });
+});
+
 router.post('/', (req, res) => {
 
   Author.create(req.body, (err, createdAuthor) => {
