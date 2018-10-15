@@ -40,4 +40,11 @@ router.post('/', (req, res) => {
 
 
 
+router.delete('/:id', (req, res) => {
+  Author.findByIdAndRemove(req.params.id, (err, deleted) => {
+    res.redirect('/authors')
+  })
+});
+
+
 module.exports = router;
