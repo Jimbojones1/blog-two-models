@@ -6,7 +6,7 @@
   </head>
   <body>
     <header>
-      <h1><%=articles.title%></h1>
+      <h1><%=article.title%></h1>
       <nav>
         <ul>
           <li>
@@ -23,7 +23,7 @@
         <%=article.body%>
       </section>
       <section>
-          <a href="/articles/<%=article._id%>">Edit</a>
+          <a href="/articles/<%=article.id%>/edit">Edit</a>
       </section>
       <section>
           <form action="/articles/<%=article._id%>?_method=DELETE" method="post">
