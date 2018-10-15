@@ -12,6 +12,7 @@ app.use(methodOverride('_method'));
 // setting up the middleware for our controller
 // where every route will start with /authors
 app.use('/authors', authorsController);
+app.use('/articles', articlesController);
 
 app.get('/', (req, res) => {
   res.render('index.ejs');
