@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const Article = require('../models/articles');
-
+const Author  = require('../models/authors');
 
 
 router.get('/', (req, res)=>{
@@ -14,7 +14,12 @@ router.get('/', (req, res)=>{
 
 
 router.get('/new', (req, res) => {
-  res.render('articles/new.ejs');
+  Author.find({}, (err, allAuthors) => {
+    res.render('articles/new.ejs', {
+      authors: allAuthors
+    });
+  })
+
 })
 
 router.get('/:id', (req, res)=>{
@@ -37,9 +42,20 @@ router.get('/:id/edit', (req, res)=>{
 
 router.post('/', (req, res)=>{
 
-  Article.create(req.body, (err, createdArticle) => {
+  // First we are finding the author that was chosen
+  // from the browser
+  Author.findById(req.body.authorId, (err, foundAuthor) => {
+    // Then we are creating the article from the browser,
+    // after we got the response from the Author query above ^
+    Article.create(req.body, (err, createdArticle) => {
 
-    res.redirect('/articles')
+      // Then when we get the response from the article query
+      // we tie the article to the author like below
+      foundAuthor.articles.push(createdArticle);
+      found.save((err, data) => {
+        res.redirect('/articles')
+      });
+    });
   });
 });
 
