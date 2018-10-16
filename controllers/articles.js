@@ -63,8 +63,20 @@ router.post('/', (req, res)=>{
 });
 
 router.delete('/:id', (req, res)=>{
-  Article.findByIdAndRemove(req.params.id, ()=>{
-    res.redirect('/articles');
+  Article.findByIdAndRemove(req.params.id, (err, deletedArticle)=>{
+    // Now that we deleted the article from the Article Model's collection
+    // we now want to remove the article from the Author.articles
+    Author.findOne({'articles._id': req.params.id}, (err, foundAuthor) => {
+      // SO now that we found the Author with the article
+      // we are going to go into that authors array and find the article
+      // thats what the .id is doing (finding the article),
+      // remember req.params.id is the article.id
+      // then we are going to remove it
+      foundAuthor.articles.id(req.params.id).remove();
+      foundAuthor.save((err, data) => {
+         res.redirect('/articles');
+      });
+    })
   });
 });
 
