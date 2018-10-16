@@ -21,6 +21,17 @@
     <main>
       <h2>Article Attributes:</h2>
       <form action="/articles/<%=article._id%>?_method=PUT" method="POST">
+
+        <select name="authorId">
+          <%for (let i = 0; i < authors.length; i++) {%>
+            <option value="<%=authors[i].id%>"
+              <%if(authors[i]._id.toString() === articleAuthor._id.toString()){%>
+                  selected
+              <%}%>
+            ><%=authors[i].name%></option>
+          <%}%>
+        </select>
+        <br>
         <input type="text" name="title" value="<%=article.title%>"/><br/>
         <textarea name="body"><%=article.body%></textarea><br/>
         <input type="submit" value="Update Article"/>
