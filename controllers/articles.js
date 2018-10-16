@@ -24,9 +24,12 @@ router.get('/new', (req, res) => {
 
 router.get('/:id', (req, res)=>{
   Article.findById(req.params.id, (err, foundArticle)=>{
-
-    res.render('articles/show.ejs', {
-      article: foundArticle
+    Author.findOne({'articles._id': req.params.id}, (err, foundAuthor) => {
+      console.log(foundAuthor, ' this is foundAuthor')
+        res.render('articles/show.ejs', {
+          article: foundArticle,
+          author: foundAuthor
+        });
     });
   });
 });
@@ -52,7 +55,7 @@ router.post('/', (req, res)=>{
       // Then when we get the response from the article query
       // we tie the article to the author like below
       foundAuthor.articles.push(createdArticle);
-      found.save((err, data) => {
+      foundAuthor.save((err, data) => {
         res.redirect('/articles')
       });
     });

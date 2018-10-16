@@ -21,7 +21,7 @@ router.get('/:id',(req, res) => {
   Author.findById(req.params.id, (err, authorFound) => {
     res.render('authors/show.ejs', {
       author: authorFound
-    })
+    });
   });
 });
 
