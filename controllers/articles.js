@@ -81,9 +81,26 @@ router.delete('/:id', (req, res)=>{
 });
 
 router.put('/:id', (req, res)=>{
-  Article.findOneAndDelete(req.params.id, req.body, ()=>{
-    res.redirect('/articles');
+  Article.findOneAndUpdate(req.params.id, req.body, {new: true}, (err, updatedArticle)=>{
+    // Once we updated the article in the articles collection
+    // then we want to update the article in Author.articles
+    Author.findOne({'articles._id': req.params.id}, (err, foundAuthor) => {
+      // so now that I've found the author that has the article
+
+      // Find that article and remove
+      foundAuthor.articles.id(req.params.id).remove();
+      // Then add the updateArticle to authors.articles array
+      foundAuthor.articles.push(updatedArticle);
+      foundAuthor.save((err, data) => {
+        res.redirect('/articles');
+      });
+    });
   });
 });
+
+
+
+
+
 
 module.exports = router;
