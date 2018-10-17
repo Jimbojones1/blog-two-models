@@ -4,6 +4,8 @@ const router  = express.Router();
 const Author  = require('../models/authors');
 const Article = require('../models/articles');
 router.get('/', (req, res) => {
+  // check the session, console.log(req.session)
+  console.log(req.session, ' in authors')
   Author.find({}, (err, foundAuthors) => {
     res.render('authors/index.ejs', {
       authors: foundAuthors
@@ -13,6 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
+  console.log(req.session, ' in the new route')
   res.render('authors/new.ejs');
 });
 
@@ -27,11 +30,22 @@ router.get('/:id',(req, res) => {
 
 
 router.get('/:id/edit', (req, res) => {
-  Author.findById(req.params.id, (err, editAuthor) => {
-    res.render('authors/edit.ejs', {
-      author: editAuthor
-    });
-  });
+  // Check to see if the user is logged in
+  // if they are let them edit an Author,
+  // if not redirect them to the login page, and leave
+  // message telling them they need to be logged in
+  if(req.session.logged === true){
+      Author.findById(req.params.id, (err, editAuthor) => {
+        res.render('authors/edit.ejs', {
+          author: editAuthor
+        });
+      });
+  } else {
+    req.session.message = 'You have to be logged in to edit an author';
+    res.redirect('/auth/login');
+  }
+
+
 });
 
 router.post('/', (req, res) => {
