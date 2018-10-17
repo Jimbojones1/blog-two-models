@@ -53,6 +53,10 @@ router.get('/:id', async (req, res)=>{
       //if you are still confused look up array destructering, its fancy new javascript
       const [foundArticle, foundAuthor] = await Promise.all([findArticle, findAuthor]);
 
+      // The above is short for
+      // const finishedPromiseArray = await Promise.all([findArticle, findAuthor]);
+      // const foundArticle = finishedPromiseArray[0];
+      // const foundAuthor  = finishedPromiseArray[1];
       res.render('articles/show.ejs', {
         article: foundArticle,
         author: foundAuthor
