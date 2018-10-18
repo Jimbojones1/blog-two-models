@@ -18,7 +18,9 @@ app.use(session({
   saveUninitialized: false
 }));
 
+// app.use((req, res) => {
 
+// })
 // make sure to require this before our controller
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(methodOverride('_method'));

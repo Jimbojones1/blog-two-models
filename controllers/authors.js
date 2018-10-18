@@ -5,7 +5,7 @@ const Author  = require('../models/authors');
 const Article = require('../models/articles');
 router.get('/', (req, res) => {
   // check the session, console.log(req.session)
-  console.log(req.session, ' in authors')
+
   Author.find({}, (err, foundAuthors) => {
     res.render('authors/index.ejs', {
       authors: foundAuthors
